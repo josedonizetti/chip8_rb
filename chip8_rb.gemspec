@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Chip8Rb::VERSION
   spec.authors       = ["Jose Donizetti"]
   spec.email         = ["jdbjunior@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{chip8 interpreter}
+  spec.description   = %q{chip8 interpreter}
+  spec.homepage      = "https://github.com/josedonizetti/chip8_rb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
