@@ -1,1 +1,1 @@
-require 'chip8_rb'
+require 'chip8'

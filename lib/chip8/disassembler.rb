@@ -1,4 +1,4 @@
-module Chip8Rb
+module Chip8
   class Disassembler
     def disassemble(memory)
       pc = 0
@@ -109,5 +109,5 @@ end
 filename = "/Users/josedonizetti/workspace/chip8_rb/games/INVADERS"
 memory = File.open(filename, "rb") {|f| f.read }.unpack("C*")
 
-disassembler = Chip8Rb::Disassembler.new
+disassembler = Chip8::Disassembler.new
 disassembler.disassemble(memory)

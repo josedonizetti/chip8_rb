@@ -1,3 +1,3 @@
-module Chip8Rb
+module Chip8
   VERSION = "0.0.1"
 end

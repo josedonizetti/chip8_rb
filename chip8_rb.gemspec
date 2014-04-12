@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'chip8_rb/version'
+require 'chip8/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "chip8_rb"
-  spec.version       = Chip8Rb::VERSION
+  spec.version       = Chip8::VERSION
   spec.authors       = ["Jose Donizetti"]
   spec.email         = ["jdbjunior@gmail.com"]
   spec.summary       = %q{chip8 interpreter}
