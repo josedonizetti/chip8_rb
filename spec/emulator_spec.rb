@@ -41,5 +41,15 @@ module  Chip8
       end
     end
 
+    context "7xkk" do
+      it "should set Vx = Vx + kk" do
+        program = [0x7E, 0xEE]
+        emulator = Emulator.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v14]).to eq(238)
+      end
+    end
+
   end
 end
