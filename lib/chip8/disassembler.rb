@@ -100,14 +100,5 @@ module Chip8
       	pc += 2
       end
     end
-
-    def print_instruction(a,b,c)
-    end
   end
 end
-
-filename = "/Users/josedonizetti/workspace/chip8_rb/games/INVADERS"
-memory = File.open(filename, "rb") {|f| f.read }.unpack("C*")
-
-disassembler = Chip8::Disassembler.new
-disassembler.disassemble(memory)
