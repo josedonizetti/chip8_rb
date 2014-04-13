@@ -30,5 +30,16 @@ module  Chip8
         expect(emulator.pc).to eq(549)
       end
     end
+
+    context "6xkk" do
+      it "should set Vx = kk" do
+        program = [0x6F, 0xFF]
+        emulator = Emulator.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v15]).to eq(255)
+      end
+    end
+
   end
 end

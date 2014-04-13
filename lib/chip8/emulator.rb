@@ -37,6 +37,7 @@ module Chip8
 
         case (byte1 >> 4)
         when 0x1; op0x1(byte1, byte2)
+        when 0x6; op0x6(byte1, byte2)
         end
 
         index += 2
@@ -53,6 +54,11 @@ module Chip8
 
     def op0x1(byte1, byte2)
       @pc = "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+    end
+
+    def op0x6(byte1, byte2)
+      register = "v#{(byte1 & 0xf)}".to_sym
+      @registers[register] = byte2
     end
   end
 end
