@@ -51,5 +51,16 @@ module  Chip8
       end
     end
 
+    context "8xy0" do
+      it "should set Vx = Vy" do
+        program = [0x61, 0x10, 0x82, 0x10]
+        emulator = Emulator.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v1]).to eq(16)
+        expect(emulator.registers[:v2]).to eq(emulator.registers[:v1])
+      end
+    end
+
   end
 end

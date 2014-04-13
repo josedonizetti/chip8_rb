@@ -39,6 +39,7 @@ module Chip8
         when 0x1; op0x1(byte1, byte2)
         when 0x6; op0x6(byte1, byte2)
         when 0x7; op0x7(byte1, byte2)
+        when 0x8; op0x8(byte1, byte2)
         end
 
         index += 2
@@ -65,6 +66,12 @@ module Chip8
     def op0x7(byte1, byte2)
       register = "v#{(byte1 & 0xf)}".to_sym
       @registers[register] = byte2
+    end
+
+    def op0x8(byte1, byte2)
+      register1 = "v#{(byte1 & 0xf)}".to_sym
+      register2 = "v#{(byte2 >> 4) & 0xf}".to_sym
+      @registers[register1] = @registers[register2]
     end
   end
 end
