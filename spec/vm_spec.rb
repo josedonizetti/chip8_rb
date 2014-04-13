@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 module  Chip8
-  describe Emulator do
+  describe VM do
     context ".load" do
       it "should initialie the emulator state" do
         program = [0x00, 0xE0, 0x00, 0xEE]
-        emulator = Emulator.load(program)
+        emulator = VM.load(program)
 
         expect(emulator.pc).to eq(0x200)
         expect(emulator.sp).to eq(0)
@@ -24,7 +24,7 @@ module  Chip8
     context "1nnn" do
       it "should set program counter to nnn" do
         program = [0x12, 0x25]
-        emulator = Emulator.load(program)
+        emulator = VM.load(program)
         emulator.execute
 
         expect(emulator.pc).to eq(549)
@@ -55,7 +55,7 @@ module  Chip8
     context "6xkk" do
       it "should set Vx = kk" do
         program = [0x6F, 0xFF]
-        emulator = Emulator.load(program)
+        emulator = VM.load(program)
         emulator.execute
 
         expect(emulator.registers[:v15]).to eq(255)
@@ -65,7 +65,7 @@ module  Chip8
     context "7xkk" do
       it "should set Vx = Vx + kk" do
         program = [0x7E, 0xEE]
-        emulator = Emulator.load(program)
+        emulator = VM.load(program)
         emulator.execute
 
         expect(emulator.registers[:v14]).to eq(238)
@@ -75,7 +75,7 @@ module  Chip8
     context "8xy0" do
       it "should set Vx = Vy" do
         program = [0x61, 0x10, 0x82, 0x10]
-        emulator = Emulator.load(program)
+        emulator = VM.load(program)
         emulator.execute
 
         expect(emulator.registers[:v1]).to eq(16)

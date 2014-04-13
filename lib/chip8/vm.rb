@@ -1,5 +1,5 @@
 module Chip8
-  class Emulator
+  class VM
     attr_reader :memory, :sp, :pc, :registers
 
     def initialize(program)
@@ -48,7 +48,7 @@ module Chip8
 
     class << self
       def load(program)
-        Emulator.new(program)
+        VM.new(program)
       end
     end
 
