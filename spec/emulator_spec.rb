@@ -21,5 +21,14 @@ module  Chip8
       end
     end
 
+    context "1nnn" do
+      it "should set program counter to nnn" do
+        program = [0x12, 0x25]
+        emulator = Emulator.load(program)
+        emulator.execute
+
+        expect(emulator.pc).to eq(549)
+      end
+    end
   end
 end
