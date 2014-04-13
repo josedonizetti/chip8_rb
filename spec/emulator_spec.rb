@@ -31,6 +31,27 @@ module  Chip8
       end
     end
 
+    context "0x2nnn" do
+      it "should call subroutine at nnn" do
+        pending
+      end
+    end
+
+    context "3xkk" do
+      it "should skip next instruction if Vx = kk" do
+      end
+    end
+
+    context "4xkk" do
+      it "should skip next instruction if Vx != kk" do
+      end
+    end
+
+    context "5xy0" do
+      it "should skip next instruction if Vx = Vy" do
+      end
+    end
+
     context "6xkk" do
       it "should set Vx = kk" do
         program = [0x6F, 0xFF]
@@ -62,5 +83,213 @@ module  Chip8
       end
     end
 
+    context "8xy1" do
+      it "should set Vx = Vx OR Vy" do
+        pending
+      end
+    end
+
+    context "8xy2" do
+      it "should set Vx = Vx AND Vy" do
+        pending
+      end
+    end
+
+    context "8xy3" do
+      it "should set Vx = Vx XOR Vy" do
+        pending
+      end
+    end
+
+    context "8xy4" do
+      it "should set Vx = Vx + Vy" do
+        pending
+      end
+
+      it "should set VF 1 if (Vx + Vy) > 255" do
+      end
+
+      it "should set VF 0 if (Vx + Vy) < 255" do
+      end
+    end
+
+    context "8xy5" do
+      it "should set Vx = Vx - Vy" do
+        pending
+      end
+
+      it "should set VF = 1 if Vx > Vy" do
+        pending
+      end
+
+      it "should set VF = 0 if Vx < Vy" do
+        pending
+      end
+    end
+
+    context "8xy6" do
+      it "should set Vx = Vx >> 1" do
+        pending
+      end
+
+      it "should set VF to 1 if Vx least-significant bit is 1" do
+        pending
+      end
+
+      it "should set VF to 0 if Vx least-significant bit is not 1" do
+        pending
+      end
+
+      it "should divide Vx by 2" do
+        pending
+      end
+    end
+
+    context "8xy7" do
+      it "should set Vx = Vy - Vx" do
+      end
+
+      it "should set VF to 1 if Vy > Vx" do
+      end
+
+      it "should set VF to 0 if Vy < Vx" do
+      end
+    end
+
+    context "8xyE" do
+      it "should set Vx = Vx << 1" do
+        pending
+      end
+
+      it "should set VF to 1 if Vx most-signiticant bit is 1" do
+        pending
+      end
+
+      it "should set VF to 0 if Vx most-signiticant bit is 0" do
+        pending
+      end
+
+      it "should multiply Vx by 2" do
+        pending
+      end
+    end
+
+    context "9xy0" do
+      it "should skip next instruction if Vx != Vy" do
+      end
+    end
+
+    context "Annn" do
+      it "should set the register I = nnn" do
+        pending
+      end
+    end
+
+    context "Bnnn" do
+      it "should jump to location nnn + V0" do
+        pending
+      end
+    end
+
+    context "Cxkk" do
+      it "should set Vx = random number between(0 and 255) AND kk" do
+        pending
+      end
+    end
+
+    context "Dxyn" do
+      it "should read n bytes from before starting at I" do
+        pending
+      end
+
+      it "should display sprites at Vx, and Vy" do
+        pending
+      end
+
+      it "should xor sprites and set VF to 1 if any pixel is erased" do
+        pending
+      end
+
+      it "should xor sprites and set VF to 0 if no pixel is erased" do
+        pending
+      end
+    end
+
+    context "Ex9E" do
+      it "should skip next instruction if key with Vx value is pressed" do
+      end
+    end
+
+    context "ExA1" do
+      it "should skip next instruction if key with Vx is not pressed" do
+        pending
+      end
+    end
+
+    context "Fx07" do
+      it "should set Vx = delay times value" do
+        pending
+      end
+    end
+
+    context "Fx0A" do
+      it "should stop execution until a key is pressed" do
+        pending
+      end
+
+      it "should set the key press down to Vx" do
+        pending
+      end
+    end
+
+    context "Fx15" do
+      it "should set delay timer to Vx" do
+        pending
+      end
+    end
+
+    context "Fx18" do
+      it "should set sound times to Vx" do
+        pending
+      end
+    end
+
+    context "Fx1E" do
+      it "should set I = I + Vx" do
+        pending
+      end
+    end
+
+    context "Fx29" do
+      it "should set I = location of sprite for digit Vx" do
+        pending
+      end
+    end
+
+    context "Fx33" do
+      it "should store bcd representation of Vx in memory I" do
+        pending
+      end
+
+      it "should store bcd representation of Vx in memory I + 1" do
+        pending
+      end
+
+      it "should store bcd representation of Vx in memory I + 2" do
+        pending
+      end
+    end
+
+    context "Fx55" do
+      it "should store registers V0 through Vx in memory starting at location I" do
+        pending
+      end
+    end
+
+    context "Fx65" do
+      it "should read registers V0 through Vx from memory starting at location I" do
+        pending
+      end
+    end
   end
 end
