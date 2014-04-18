@@ -10,7 +10,6 @@ module Chip8
       @sp = 0
       @pc = 0x200
 
-
       @registers = {}
       # 0 to F
       16.times { |i| @registers["v#{i}".to_sym] = 0 }
@@ -31,18 +30,18 @@ module Chip8
 
     def execute
       index = 0
-      while index < @program.size
-        byte1 = memory[0x200 + index]
-        byte2 = memory[0x200 + index + 1]
+      while (@memory[pc] != 0x00) && (@pc < @memory.size)
+        byte1 = memory[@pc]
+        byte2 = memory[@pc + 1]
 
         case (byte1 >> 4)
-        when 0x1; op0x1(byte1, byte2)
+        when 0x1; op0x1(byte1, byte2); next
         when 0x6; op0x6(byte1, byte2)
         when 0x7; op0x7(byte1, byte2)
         when 0x8; op0x8(byte1, byte2)
         end
 
-        index += 2
+        @pc += 2
       end
     end
 
