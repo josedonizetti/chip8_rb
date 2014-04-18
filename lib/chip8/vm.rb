@@ -90,6 +90,7 @@ module Chip8
       case (byte2 & 0xF)
       when 0x0; op0x8_0(byte1, byte2)
       when 0x1; op0x8_1(byte1, byte2)
+      when 0x2; op0x8_2(byte1, byte2)
       end
 
     end
@@ -105,5 +106,12 @@ module Chip8
       register2 = "v#{(byte2 >> 4)}".to_sym
       @registers[register1] = @registers[register1] | @registers[register2]
     end
+
+    def op0x8_2(byte1, byte2)
+      register1 = "v#{(byte1 & 0xF)}".to_sym
+      register2 = "v#{(byte2 >> 4)}".to_sym
+      @registers[register1] = @registers[register1] & @registers[register2]
+    end
+
   end
 end
