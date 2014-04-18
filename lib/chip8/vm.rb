@@ -38,6 +38,7 @@ module Chip8
         when 0x1; op0x1(byte1, byte2); next
         when 0x3; op0x3(byte1, byte2)
         when 0x4; op0x4(byte1, byte2)
+        when 0x5; op0x5(byte1, byte2)
         when 0x6; op0x6(byte1, byte2)
         when 0x7; op0x7(byte1, byte2)
         when 0x8; op0x8(byte1, byte2)
@@ -67,6 +68,12 @@ module Chip8
     def op0x4(byte1, byte2)
       i = (byte1 & 0xF)
       @pc += 2 if registers["v#{i}".to_sym] != byte2
+    end
+
+    def op0x5(byte1, byte2)
+      x = (byte1 & 0xF)
+      y = (byte2 >> 4)
+      @pc += 2 if registers["v#{x}".to_sym] == registers["v#{y}".to_sym]
     end
 
     def op0x6(byte1, byte2)

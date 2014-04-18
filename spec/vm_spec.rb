@@ -65,6 +65,12 @@ module  Chip8
 
     context "5xy0" do
       it "should skip next instruction if Vx = Vy" do
+        program = [0x69, 0xA0, 0x65, 0xA0, 0x59, 0x50]
+        emulator = VM.load(program)
+        initial_pc = emulator.pc
+        emulator.execute
+
+        expect(emulator.pc).to eq(initial_pc + 6 + 2)
       end
     end
 
