@@ -61,29 +61,30 @@ module Chip8
     end
 
     def op0x3(byte1, byte2)
-      i = (byte1 & 0xF)
-      @pc += 2 if registers["v#{i}".to_sym] == byte2
+      x = get_register_x(byte1)
+      skip_next_instruction if equal_register_to_byte?(x, byte2)
     end
 
     def op0x4(byte1, byte2)
-      i = (byte1 & 0xF)
-      @pc += 2 if registers["v#{i}".to_sym] != byte2
+      x = get_register_x(byte1)
+      skip_next_instruction if !equal_register_to_byte?(x, byte2)
     end
 
     def op0x5(byte1, byte2)
-      x = (byte1 & 0xF)
-      y = (byte2 >> 4)
-      @pc += 2 if registers["v#{x}".to_sym] == registers["v#{y}".to_sym]
+      x = get_register_x(byte1)
+      y = get_register_y(byte2)
+      skip_next_instruction if equal_register_to_register?(x, y)
     end
 
     def op0x6(byte1, byte2)
-      register = "v#{(byte1 & 0xf)}".to_sym
-      @registers[register] = byte2
+      x = get_register_x(byte1)
+      @registers[x] = byte2
     end
 
     def op0x7(byte1, byte2)
-      register = "v#{(byte1 & 0xf)}".to_sym
-      @registers[register] = byte2
+      x = get_register_x(byte1)
+
+      @registers[x] = byte2
     end
 
     def op0x8(byte1, byte2)
@@ -96,21 +97,41 @@ module Chip8
     end
 
     def op0x8_0(byte1, byte2)
-      register1 = "v#{(byte1 & 0xf)}".to_sym
-      register2 = "v#{(byte2 >> 4) & 0xf}".to_sym
-      @registers[register1] = @registers[register2]
+      x = get_register_x(byte1)
+      y = get_register_y(byte2)
+      @registers[x] = @registers[y]
     end
 
     def op0x8_1(byte1, byte2)
-      register1 = "v#{(byte1 & 0XF)}".to_sym
-      register2 = "v#{(byte2 >> 4)}".to_sym
-      @registers[register1] = @registers[register1] | @registers[register2]
+      x = get_register_x(byte1)
+      y = get_register_y(byte2)
+      @registers[x] = @registers[x] | @registers[y]
     end
 
     def op0x8_2(byte1, byte2)
-      register1 = "v#{(byte1 & 0xF)}".to_sym
-      register2 = "v#{(byte2 >> 4)}".to_sym
-      @registers[register1] = @registers[register1] & @registers[register2]
+      x = get_register_x(byte1)
+      y = get_register_y(byte2)
+      @registers[x] = @registers[x] & @registers[y]
+    end
+
+    def get_register_x(byte)
+      "v#{(byte & 0xF)}".to_sym
+    end
+
+    def get_register_y(byte)
+      "v#{(byte >> 4)}".to_sym
+    end
+
+    def equal_register_to_byte?(register, byte)
+      @registers[register] == byte
+    end
+
+    def equal_register_to_register?(register1, register2)
+      registers[register1] == registers[register2]
+    end
+
+    def skip_next_instruction
+      @pc += 2
     end
 
   end
