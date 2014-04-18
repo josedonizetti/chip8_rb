@@ -86,11 +86,11 @@ module  Chip8
 
     context "7xkk" do
       it "should set Vx = Vx + kk" do
-        program = [0x7E, 0xEE]
+        program = [0x6E, 0x55, 0x7E, 0xEE]
         emulator = VM.load(program)
         emulator.execute
 
-        expect(emulator.registers[:v14]).to eq(238)
+        expect(emulator.registers[:v14]).to eq(323)
       end
     end
 

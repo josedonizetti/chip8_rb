@@ -83,8 +83,7 @@ module Chip8
 
     def op0x7(byte1, byte2)
       x = get_register_x(byte1)
-
-      @registers[x] = byte2
+      @registers[x] = @registers[x] + byte2
     end
 
     def op0x8(byte1, byte2)
