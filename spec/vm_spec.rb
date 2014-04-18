@@ -107,7 +107,11 @@ module  Chip8
 
     context "8xy1" do
       it "should set Vx = Vx OR Vy" do
-        pending
+        program = [0x67, 0x08, 0x65, 0x64, 0x87, 0x51]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v7]).to eq(108)
       end
     end
 
