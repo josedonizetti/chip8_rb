@@ -39,6 +39,16 @@ module  Chip8
 
     context "3xkk" do
       it "should skip next instruction if Vx = kk" do
+        # 6xkk - LD Vx, V1
+        # 6112 - LD V1, 12
+        # 3xkk - SE Vx
+        # 3112 - SE (PC + 2) IF V1 == 12
+        program = [0x61, 0x12, 0x31, 0x12]
+        emulator = VM.load(program)
+        initial_pc = emulator.pc
+        emulator.execute
+
+        expect(emulator.pc).to eq(initial_pc + 4 + 2)
       end
     end
 
