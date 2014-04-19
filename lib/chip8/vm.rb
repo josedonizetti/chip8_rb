@@ -62,7 +62,8 @@ module Chip8
     private
 
     def op0x1(byte1, byte2)
-      @pc = "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+      nnn = get_nnn(byte1, byte2)
+      @pc = nnn
     end
 
     def op0x3(byte1, byte2)
@@ -181,11 +182,12 @@ module Chip8
     end
 
     def op0xA(byte1, byte2)
-      @i = "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+      nnn = get_nnn(byte1, byte2)
+      @i = nnn
     end
 
     def op0xB(byte1, byte2)
-      nnn = "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+      nnn = get_nnn(byte1, byte2)
       @pc = nnn + @registers[:v0]
     end
 
@@ -195,6 +197,10 @@ module Chip8
 
     def get_register_y(byte)
       "v#{(byte >> 4)}".to_sym
+    end
+
+    def get_nnn(byte1, byte2)
+      "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
     end
 
     def equal_register_to_byte?(register, byte)
