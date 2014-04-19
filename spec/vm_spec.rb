@@ -48,9 +48,14 @@ module  Chip8
       end
     end
 
-    context "0x2nnn" do
+    context "2nnn" do
       it "should call subroutine at nnn" do
-        pending
+        program = [0x2F, 0x08]
+        vm = VM.new(program)
+        vm.execute
+
+        expect(vm.sp).to eq(1)
+        expect(vm.pc).to eq(0xF08)
       end
     end
 

@@ -10,6 +10,8 @@ module Chip8
       @sp = 0
       @pc = 0x200
 
+      @stack = []
+
       @registers = {}
       # 0 to F
       16.times { |i| @registers["v#{i}".to_sym] = 0 }
@@ -40,6 +42,7 @@ module Chip8
 
         case (byte1 >> 4)
         when 0x1; op0x1(byte1, byte2); next
+        when 0x2; op0x2(byte1, byte2); next
         when 0x3; op0x3(byte1, byte2)
         when 0x4; op0x4(byte1, byte2)
         when 0x5; op0x5(byte1, byte2)
@@ -61,6 +64,15 @@ module Chip8
 
     def op0x1(byte1, byte2)
       nnn = get_nnn(byte1, byte2)
+      @pc = nnn
+    end
+
+    def op0x2(byte1, byte2)
+      nnn = get_nnn(byte1, byte2)
+
+      @stack.push(@pc)
+      @sp += 1
+
       @pc = nnn
     end
 
