@@ -34,7 +34,12 @@ module  Chip8
 
     context "00EE" do
       it "it should return from a subroutine" do
-        pending
+        program = [0x1F, 0x25, 0x22, 0x02, 0x00, 0xEE]
+        vm = VM.new(program)
+        vm.execute
+
+        expect(vm.sp).to eq(0)
+        expect(vm.pc).to eq(0xF25)
       end
     end
 

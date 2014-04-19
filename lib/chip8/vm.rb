@@ -36,11 +36,12 @@ module Chip8
 
     def execute
       index = 0
-      while (@memory[pc] != 0x00) && (@pc < @memory.size)
+      while (@memory[pc] != 0x00 || @memory[pc + 1] != 0x00) && (@pc < @memory.size)
         byte1 = memory[@pc]
         byte2 = memory[@pc + 1]
 
         case (byte1 >> 4)
+        when 0x0; op0x0(byte1, byte2); next
         when 0x1; op0x1(byte1, byte2); next
         when 0x2; op0x2(byte1, byte2); next
         when 0x3; op0x3(byte1, byte2)
@@ -62,6 +63,17 @@ module Chip8
 
     private
 
+    def op0x0(byte1, byte2)
+      case byte2
+      when 0xEE; op0x00EE()
+      end
+    end
+
+    def op0x00EE
+      @sp -= 1
+      @pc = @stack.pop
+    end
+
     def op0x1(byte1, byte2)
       nnn = get_nnn(byte1, byte2)
       @pc = nnn
@@ -72,7 +84,6 @@ module Chip8
 
       @stack.push(@pc)
       @sp += 1
-
       @pc = nnn
     end
 
