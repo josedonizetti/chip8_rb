@@ -1,6 +1,6 @@
 module Chip8
   class VM
-    attr_reader :memory, :sp, :pc, :registers, :i, :dt, :st
+    attr_reader :memory, :sp, :pc, :i, :dt, :st
 
     alias :program_counter :pc
     alias :stack_pointer :sp
@@ -25,6 +25,8 @@ module Chip8
       @i = 0
       @dt = 0
       @st = 0
+
+      define_registers_methods
     end
 
     def initialize_memory
@@ -309,12 +311,20 @@ module Chip8
     end
 
     def equal_register_to_register?(register1, register2)
-      registers[register1] == registers[register2]
+      @registers[register1] == @registers[register2]
     end
 
     def skip_next_instruction
       @pc += 2
     end
 
+    def define_registers_methods
+      16.times { |n|
+        register = "v#{n}".to_sym
+        define_singleton_method(register) do
+          @registers[register]
+        end
+      }
+    end
   end
 end

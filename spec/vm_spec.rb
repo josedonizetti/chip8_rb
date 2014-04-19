@@ -16,7 +16,7 @@ module  Chip8
 
         16.times { |i|
           register = "v#{i}".to_sym
-          expect(vm.registers[register]).to eq(0)
+          expect(vm.send(register)).to eq(0)
         }
       end
     end
@@ -107,7 +107,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(255)
+        expect(vm.v15).to eq(255)
       end
     end
 
@@ -117,7 +117,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v14]).to eq(323)
+        expect(vm.v14).to eq(323)
       end
     end
 
@@ -127,8 +127,8 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v1]).to eq(16)
-        expect(vm.registers[:v2]).to eq(vm.registers[:v1])
+        expect(vm.v1).to eq(16)
+        expect(vm.v2).to eq(vm.v1)
       end
     end
 
@@ -138,7 +138,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v7]).to eq(108)
+        expect(vm.v7).to eq(108)
       end
     end
 
@@ -148,7 +148,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v1]).to eq(16)
+        expect(vm.v1).to eq(16)
       end
     end
 
@@ -158,7 +158,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v8]).to eq(48)
+        expect(vm.v8).to eq(48)
       end
     end
 
@@ -168,7 +168,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v10]).to eq(15)
+        expect(vm.v10).to eq(15)
       end
 
       it "should set VF 1 if (Vx + Vy) > 255" do
@@ -176,16 +176,15 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(1)
+        expect(vm.v15).to eq(1)
       end
 
       it "should set VF 0 if (Vx + Vy) =< 255" do
-        program = [0x6C, 0xF0, 0x6D, 0x0F, 0x8C, 0xD4]
+        program = [0x6F, 0x01, 0x6C, 0xF0, 0x6D, 0x0F, 0x8C, 0xD4]
         vm = VM.new(program)
-        vm.registers[:v15] = 1
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(0)
+        expect(vm.v15).to eq(0)
       end
     end
 
@@ -195,7 +194,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v13]).to eq(16)
+        expect(vm.v13).to eq(16)
       end
 
       it "should set VF = 1 if Vx > Vy" do
@@ -203,17 +202,16 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(1)
+        expect(vm.v15).to eq(1)
       end
 
       it "should set VF = 0 if Vx <= Vy" do
-        program = [0x6D, 0x15, 0x61, 0x25, 0x8D, 0x15]
+        program = [0x6F, 0x01, 0x6D, 0x15, 0x61, 0x25, 0x8D, 0x15]
         vm = VM.new(program)
-        vm.registers[:v15] = 1
         vm.execute
 
-        expect(vm.registers[:v13]).to eq(240)
-        expect(vm.registers[:v15]).to eq(0)
+        expect(vm.v13).to eq(240)
+        expect(vm.v15).to eq(0)
       end
     end
 
@@ -223,7 +221,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v3]).to eq(50)
+        expect(vm.v3).to eq(50)
       end
 
       it "should set VF to 1 if Vx least-significant bit is 1" do
@@ -231,16 +229,15 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(1)
+        expect(vm.v15).to eq(1)
       end
 
       it "should set VF to 0 if Vx least-significant bit is not 1" do
-        program = [0x63, 0x64, 0x83, 0x16]
+        program = [0x6F, 0x01, 0x63, 0x64, 0x83, 0x16]
         vm = VM.new(program)
-        vm.registers[:v15] = 1
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(0)
+        expect(vm.v15).to eq(0)
       end
     end
 
@@ -250,7 +247,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v5]).to eq(11)
+        expect(vm.v5).to eq(11)
       end
 
       it "should set VF to 1 if Vy > Vx" do
@@ -258,16 +255,15 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(1)
+        expect(vm.v15).to eq(1)
       end
 
       it "should set VF to 0 if Vy =< Vx" do
-        program = [0x65, 0x10, 0x66, 0x05, 0x85, 0x67]
+        program = [0x6F, 0x01, 0x65, 0x10, 0x66, 0x05, 0x85, 0x67]
         vm = VM.new(program)
-        vm.registers[:v15] = 1
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(0)
+        expect(vm.v15).to eq(0)
       end
     end
 
@@ -277,7 +273,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v8]).to eq(100)
+        expect(vm.v8).to eq(100)
       end
 
       it "should set VF to 1 if Vx most-signiticant bit is 1" do
@@ -285,16 +281,15 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(1)
+        expect(vm.v15).to eq(1)
       end
 
       it "should set VF to 0 if Vx most-signiticant bit is 0" do
-        program = [0x68, 0x32, 0x88, 0x0E]
+        program = [0x6F, 0x01, 0x68, 0x32, 0x88, 0x0E]
         vm = VM.new(program)
-        vm.registers[:v15] = 1
         vm.execute
 
-        expect(vm.registers[:v15]).to eq(0)
+        expect(vm.v15).to eq(0)
       end
     end
 
@@ -339,7 +334,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v6]).to eq(2)
+        expect(vm.v6).to eq(2)
       end
     end
 
@@ -379,7 +374,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.registers[:v4]).to eq(0xFA)
+        expect(vm.v4).to eq(0xFA)
       end
     end
 
@@ -471,7 +466,8 @@ module  Chip8
         vm.execute
 
         15.times { |n|
-          expect(vm.registers["v#{n}".to_sym]).to eq(n * 2)
+          register = "v#{n}".to_sym
+          expect(vm.send(register)).to eq(n * 2)
         }
       end
     end
