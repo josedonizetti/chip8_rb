@@ -129,6 +129,9 @@ module Chip8
       y = get_register_y(byte2)
       @registers[x] = @registers[x] + @registers[y]
       @registers[:v15] = @registers[x] > 255 ? 1 : 0
+
+      #TODO: write spec to this case
+      @registers[x] -= 256 if @registers[x] > 255
     end
 
     def op0x8_5(byte1, byte2)
@@ -136,6 +139,9 @@ module Chip8
       y = get_register_y(byte2)
       @registers[:v15] = @registers[x] > @registers[y] ? 1 : 0
       @registers[x] = @registers[x] - @registers[y]
+
+      #TODO: write spec to this case
+      @registers[x] += 256 if @registers[x] < 0
     end
 
     def op0x8_6(byte1, byte2)
@@ -149,12 +155,18 @@ module Chip8
       y = get_register_y(byte2)
       @registers[:v15] = @registers[y] > @registers[x] ? 1 : 0
       @registers[x] = @registers[y] - @registers[x]
+
+      #TODO: write spec to this case
+      @registers[x] += 256 if @registers[x] < 0
     end
 
     def op0x8_E(byte1, byte2)
       x = get_register_x(byte1)
-      @registers[:v15] = (@registers[x] & 0x80 > 0) ? 1 : 0 
+      @registers[:v15] = (@registers[x] & 0x80 > 0) ? 1 : 0
       @registers[x] = @registers[x] << 1
+
+      #TODO: write spec to this case
+      @registers[x] -= 256 if @registers[x] > 255
     end
 
     def get_register_x(byte)

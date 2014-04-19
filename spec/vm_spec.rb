@@ -141,7 +141,7 @@ module  Chip8
         emulator = VM.load(program)
         emulator.execute
 
-        expect(emulator.registers[:v10]).to eq(271)
+        expect(emulator.registers[:v10]).to eq(15)
       end
 
       it "should set VF 1 if (Vx + Vy) > 255" do
@@ -179,13 +179,13 @@ module  Chip8
         expect(emulator.registers[:v15]).to eq(1)
       end
 
-      it "should set VF = 0 if Vx < Vy" do
+      it "should set VF = 0 if Vx <= Vy" do
         program = [0x6D, 0x15, 0x61, 0x25, 0x8D, 0x15]
         emulator = VM.load(program)
         emulator.registers[:v15] = 1
         emulator.execute
 
-        expect(emulator.registers[:v13]).to eq(-16)
+        expect(emulator.registers[:v13]).to eq(240)
         expect(emulator.registers[:v15]).to eq(0)
       end
     end
