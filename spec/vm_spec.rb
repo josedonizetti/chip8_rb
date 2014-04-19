@@ -368,8 +368,12 @@ module  Chip8
     end
 
     context "Fx18" do
-      it "should set sound times to Vx" do
-        pending
+      it "should set sound timer to Vx" do
+        program = [0x69, 0x21, 0xF9, 0x18]
+        vm = VM.new(program)
+        vm.execute
+
+        expect(vm.st).to eq(0x21)
       end
     end
 

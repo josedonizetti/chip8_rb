@@ -1,6 +1,6 @@
 module Chip8
   class VM
-    attr_reader :memory, :sp, :pc, :registers, :i, :dt
+    attr_reader :memory, :sp, :pc, :registers, :i, :dt, :st
 
     def initialize(program)
       @program = program
@@ -16,6 +16,7 @@ module Chip8
 
       @i = 0
       @dt = 0
+      @st = 0
     end
 
     def initialize_memory
@@ -191,6 +192,7 @@ module Chip8
       case byte2
       when 0x07; op0xF_07(byte1)
       when 0x15; op0xF_15(byte1)
+      when 0x18; op0xF_18(byte1)
       when 0x33; op0xF_33(byte1)
       when 0x55; op0xF_55(byte1)
       when 0x65; op0xF_65(byte1)
@@ -205,6 +207,11 @@ module Chip8
     def op0xF_15(byte1)
       x = get_register_x(byte1)
       @dt = @registers[x]
+    end
+
+    def op0xF_18(byte1)
+      x = get_register_x(byte1)
+      @st = @registers[x]
     end
 
     def op0xF_33(byte1)
