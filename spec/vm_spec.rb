@@ -137,13 +137,28 @@ module  Chip8
 
     context "8xy4" do
       it "should set Vx = Vx + Vy" do
-        pending
+        program = [0x6A, 0x10, 0x6B, 0xFF, 0x8A, 0xB4]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v10]).to eq(271)
       end
 
       it "should set VF 1 if (Vx + Vy) > 255" do
+        program = [0x6C, 0xF1, 0x6D, 0x0F, 0x8C, 0xD4]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v15]).to eq(1)
       end
 
-      it "should set VF 0 if (Vx + Vy) < 255" do
+      it "should set VF 0 if (Vx + Vy) =< 255" do
+        program = [0x6C, 0xF0, 0x6D, 0x0F, 0x8C, 0xD4]
+        emulator = VM.load(program)
+        emulator.registers[:v15] = 1
+        emulator.execute
+
+        expect(emulator.registers[:v15]).to eq(0)
       end
     end
 
