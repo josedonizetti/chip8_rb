@@ -2,21 +2,21 @@ require 'spec_helper'
 
 module  Chip8
   describe VM do
-    context ".load" do
-      it "should initialie the emulator state" do
+    context ".new" do
+      it "should initialie the vm state" do
         program = [0x00, 0xE0, 0x00, 0xEE]
-        emulator = VM.load(program)
+        vm = VM.new(program)
 
-        expect(emulator.pc).to eq(0x200)
-        expect(emulator.sp).to eq(0)
+        expect(vm.pc).to eq(0x200)
+        expect(vm.sp).to eq(0)
 
-        pc = emulator.pc
-        expect(emulator.memory[pc]).to eq(0x00)
-        expect(emulator.memory[pc + 1]).to eq(0xE0)
+        pc = vm.pc
+        expect(vm.memory[pc]).to eq(0x00)
+        expect(vm.memory[pc + 1]).to eq(0xE0)
 
         16.times { |i|
           register = "v#{i}".to_sym
-          expect(emulator.registers[register]).to eq(0)
+          expect(vm.registers[register]).to eq(0)
         }
       end
     end
@@ -24,10 +24,10 @@ module  Chip8
     context "1nnn" do
       it "should set program counter to nnn" do
         program = [0x12, 0x25]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.pc).to eq(549)
+        expect(vm.pc).to eq(549)
       end
     end
 
@@ -44,261 +44,261 @@ module  Chip8
         # 3xkk - SE Vx
         # 3112 - SE (PC + 2) IF V1 == 12
         program = [0x61, 0x12, 0x31, 0x12]
-        emulator = VM.load(program)
-        initial_pc = emulator.pc
-        emulator.execute
+        vm = VM.new(program)
+        initial_pc = vm.pc
+        vm.execute
 
-        expect(emulator.pc).to eq(initial_pc + 4 + 2)
+        expect(vm.pc).to eq(initial_pc + 4 + 2)
       end
     end
 
     context "4xkk" do
       it "should skip next instruction if Vx != kk" do
         program = [0x62, 0x15, 0x42, 0x10]
-        emulator = VM.load(program)
-        initial_pc = emulator.pc
-        emulator.execute
+        vm = VM.new(program)
+        initial_pc = vm.pc
+        vm.execute
 
-        expect(emulator.pc).to eq(initial_pc + 4 + 2)
+        expect(vm.pc).to eq(initial_pc + 4 + 2)
       end
     end
 
     context "5xy0" do
       it "should skip next instruction if Vx = Vy" do
         program = [0x69, 0xA0, 0x65, 0xA0, 0x59, 0x50]
-        emulator = VM.load(program)
-        initial_pc = emulator.pc
-        emulator.execute
+        vm = VM.new(program)
+        initial_pc = vm.pc
+        vm.execute
 
-        expect(emulator.pc).to eq(initial_pc + 6 + 2)
+        expect(vm.pc).to eq(initial_pc + 6 + 2)
       end
     end
 
     context "6xkk" do
       it "should set Vx = kk" do
         program = [0x6F, 0xFF]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(255)
+        expect(vm.registers[:v15]).to eq(255)
       end
     end
 
     context "7xkk" do
       it "should set Vx = Vx + kk" do
         program = [0x6E, 0x55, 0x7E, 0xEE]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v14]).to eq(323)
+        expect(vm.registers[:v14]).to eq(323)
       end
     end
 
     context "8xy0" do
       it "should set Vx = Vy" do
         program = [0x61, 0x10, 0x82, 0x10]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v1]).to eq(16)
-        expect(emulator.registers[:v2]).to eq(emulator.registers[:v1])
+        expect(vm.registers[:v1]).to eq(16)
+        expect(vm.registers[:v2]).to eq(vm.registers[:v1])
       end
     end
 
     context "8xy1" do
       it "should set Vx = Vx OR Vy" do
         program = [0x67, 0x08, 0x65, 0x64, 0x87, 0x51]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v7]).to eq(108)
+        expect(vm.registers[:v7]).to eq(108)
       end
     end
 
     context "8xy2" do
       it "should set Vx = Vx AND Vy" do
         program = [0x61, 0x12, 0x62, 0x14, 0x81, 0x22]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v1]).to eq(16)
+        expect(vm.registers[:v1]).to eq(16)
       end
     end
 
     context "8xy3" do
       it "should set Vx = Vx XOR Vy" do
         program = [0x68, 0x10, 0x6A, 0x20, 0x88, 0xA3]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v8]).to eq(48)
+        expect(vm.registers[:v8]).to eq(48)
       end
     end
 
     context "8xy4" do
       it "should set Vx = Vx + Vy" do
         program = [0x6A, 0x10, 0x6B, 0xFF, 0x8A, 0xB4]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v10]).to eq(15)
+        expect(vm.registers[:v10]).to eq(15)
       end
 
       it "should set VF 1 if (Vx + Vy) > 255" do
         program = [0x6C, 0xF1, 0x6D, 0x0F, 0x8C, 0xD4]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(1)
+        expect(vm.registers[:v15]).to eq(1)
       end
 
       it "should set VF 0 if (Vx + Vy) =< 255" do
         program = [0x6C, 0xF0, 0x6D, 0x0F, 0x8C, 0xD4]
-        emulator = VM.load(program)
-        emulator.registers[:v15] = 1
-        emulator.execute
+        vm = VM.new(program)
+        vm.registers[:v15] = 1
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(0)
+        expect(vm.registers[:v15]).to eq(0)
       end
     end
 
     context "8xy5" do
       it "should set Vx = Vx - Vy" do
         program = [0x6D, 0x25, 0x61, 0x15, 0x8D, 0x15]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v13]).to eq(16)
+        expect(vm.registers[:v13]).to eq(16)
       end
 
       it "should set VF = 1 if Vx > Vy" do
         program = [0x6D, 0x25, 0x61, 0x15, 0x8D, 0x15]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(1)
+        expect(vm.registers[:v15]).to eq(1)
       end
 
       it "should set VF = 0 if Vx <= Vy" do
         program = [0x6D, 0x15, 0x61, 0x25, 0x8D, 0x15]
-        emulator = VM.load(program)
-        emulator.registers[:v15] = 1
-        emulator.execute
+        vm = VM.new(program)
+        vm.registers[:v15] = 1
+        vm.execute
 
-        expect(emulator.registers[:v13]).to eq(240)
-        expect(emulator.registers[:v15]).to eq(0)
+        expect(vm.registers[:v13]).to eq(240)
+        expect(vm.registers[:v15]).to eq(0)
       end
     end
 
     context "8xy6" do
       it "should set Vx = Vx >> 1" do
         program = [0x63, 0x64, 0x83, 0x16]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v3]).to eq(50)
+        expect(vm.registers[:v3]).to eq(50)
       end
 
       it "should set VF to 1 if Vx least-significant bit is 1" do
         program = [0x63, 0x63, 0x83, 0x16]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(1)
+        expect(vm.registers[:v15]).to eq(1)
       end
 
       it "should set VF to 0 if Vx least-significant bit is not 1" do
         program = [0x63, 0x64, 0x83, 0x16]
-        emulator = VM.load(program)
-        emulator.registers[:v15] = 1
-        emulator.execute
+        vm = VM.new(program)
+        vm.registers[:v15] = 1
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(0)
+        expect(vm.registers[:v15]).to eq(0)
       end
     end
 
     context "8xy7" do
       it "should set Vx = Vy - Vx" do
         program = [0x65, 0x05, 0x66, 0x10, 0x85, 0x67]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v5]).to eq(11)
+        expect(vm.registers[:v5]).to eq(11)
       end
 
       it "should set VF to 1 if Vy > Vx" do
         program = [0x65, 0x05, 0x66, 0x10, 0x85, 0x67]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(1)
+        expect(vm.registers[:v15]).to eq(1)
       end
 
       it "should set VF to 0 if Vy =< Vx" do
         program = [0x65, 0x10, 0x66, 0x05, 0x85, 0x67]
-        emulator = VM.load(program)
-        emulator.registers[:v15] = 1
-        emulator.execute
+        vm = VM.new(program)
+        vm.registers[:v15] = 1
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(0)
+        expect(vm.registers[:v15]).to eq(0)
       end
     end
 
     context "8xyE" do
       it "should set Vx = Vx << 1" do
         program = [0x68, 0x32, 0x88, 0x0E]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v8]).to eq(100)
+        expect(vm.registers[:v8]).to eq(100)
       end
 
       it "should set VF to 1 if Vx most-signiticant bit is 1" do
         program = [0x68, 0xFF, 0x88, 0x0E]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(1)
+        expect(vm.registers[:v15]).to eq(1)
       end
 
       it "should set VF to 0 if Vx most-signiticant bit is 0" do
         program = [0x68, 0x32, 0x88, 0x0E]
-        emulator = VM.load(program)
-        emulator.registers[:v15] = 1
-        emulator.execute
+        vm = VM.new(program)
+        vm.registers[:v15] = 1
+        vm.execute
 
-        expect(emulator.registers[:v15]).to eq(0)
+        expect(vm.registers[:v15]).to eq(0)
       end
     end
 
     context "9xy0" do
       it "should skip next instruction if Vx != Vy" do
         program = [0x61, 0x12, 0x62, 0x13, 0x91, 0x20]
-        emulator = VM.load(program)
-        initial_pc = emulator.pc
-        emulator.execute
+        vm = VM.new(program)
+        initial_pc = vm.pc
+        vm.execute
 
-        expect(emulator.pc).to eq(initial_pc + 6 + 2)
+        expect(vm.pc).to eq(initial_pc + 6 + 2)
       end
     end
 
     context "Annn" do
       it "should set the register I = nnn" do
         program = [0xA2, 0x25]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.i).to eq(0x225)
+        expect(vm.i).to eq(0x225)
       end
     end
 
     context "Bnnn" do
       it "should jump to location nnn + V0" do
         program = [0x60, 0x22, 0xB3, 0x22]
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.pc).to eq(0x22 + 0x322)
+        expect(vm.pc).to eq(0x22 + 0x322)
       end
     end
 
@@ -400,25 +400,25 @@ module  Chip8
                     0x6C, 0x0C, 0x6D, 0x0D, 0x6E, 0x0E, 0x6F, 0x0F,
                     0xFF, 0x55]
 
-        emulator = VM.load(program)
-        emulator.execute
+        vm = VM.new(program)
+        vm.execute
 
-        expect(emulator.memory[0xF00 + 0]).to eq(0x00)
-        expect(emulator.memory[0xF00 + 1]).to eq(0x01)
-        expect(emulator.memory[0xF00 + 2]).to eq(0x02)
-        expect(emulator.memory[0xF00 + 3]).to eq(0x03)
-        expect(emulator.memory[0xF00 + 4]).to eq(0x04)
-        expect(emulator.memory[0xF00 + 5]).to eq(0x05)
-        expect(emulator.memory[0xF00 + 6]).to eq(0x06)
-        expect(emulator.memory[0xF00 + 7]).to eq(0x07)
-        expect(emulator.memory[0xF00 + 8]).to eq(0x08)
-        expect(emulator.memory[0xF00 + 9]).to eq(0x09)
-        expect(emulator.memory[0xF00 + 10]).to eq(0x0A)
-        expect(emulator.memory[0xF00 + 11]).to eq(0x0B)
-        expect(emulator.memory[0xF00 + 12]).to eq(0x0C)
-        expect(emulator.memory[0xF00 + 13]).to eq(0x0D)
-        expect(emulator.memory[0xF00 + 14]).to eq(0x0E)
-        expect(emulator.memory[0xF00 + 15]).to eq(0x0F)
+        expect(vm.memory[0xF00 + 0]).to eq(0x00)
+        expect(vm.memory[0xF00 + 1]).to eq(0x01)
+        expect(vm.memory[0xF00 + 2]).to eq(0x02)
+        expect(vm.memory[0xF00 + 3]).to eq(0x03)
+        expect(vm.memory[0xF00 + 4]).to eq(0x04)
+        expect(vm.memory[0xF00 + 5]).to eq(0x05)
+        expect(vm.memory[0xF00 + 6]).to eq(0x06)
+        expect(vm.memory[0xF00 + 7]).to eq(0x07)
+        expect(vm.memory[0xF00 + 8]).to eq(0x08)
+        expect(vm.memory[0xF00 + 9]).to eq(0x09)
+        expect(vm.memory[0xF00 + 10]).to eq(0x0A)
+        expect(vm.memory[0xF00 + 11]).to eq(0x0B)
+        expect(vm.memory[0xF00 + 12]).to eq(0x0C)
+        expect(vm.memory[0xF00 + 13]).to eq(0x0D)
+        expect(vm.memory[0xF00 + 14]).to eq(0x0E)
+        expect(vm.memory[0xF00 + 15]).to eq(0x0F)
       end
     end
 
