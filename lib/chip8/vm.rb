@@ -187,10 +187,25 @@ module Chip8
     end
 
     def op0xF(byte1, byte2)
+      case byte2
+      when 0x55; op0xF_55(byte1)
+      when 0x65; op0xF_65(byte1)
+      end
+    end
+
+    def op0xF_55(byte1)
       x = get_register_x(byte1)
       0.upto(@registers[x]) do |n|
         @memory[@i] = @registers["v#{n}".to_sym]
         @i += 1
+      end
+    end
+
+    def op0xF_65(byte1)
+      x = get_register_x(byte1)
+      0.upto(@registers[x]) do |n|
+        register = "v#{n}".to_sym
+        @registers[register] = @memory[@i + n]
       end
     end
 

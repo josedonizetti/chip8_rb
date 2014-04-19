@@ -411,7 +411,18 @@ module  Chip8
 
     context "Fx65" do
       it "should read registers V0 through Vx from memory starting at location I" do
-        pending
+        program = [0x6F, 0x0F, 0xAF, 0xF0, 0xFF, 0x65 ]
+        vm = VM.new(program)
+
+        15.times { |n|
+          vm.memory[0xFF0 + n] = n * 2
+        }
+
+        vm.execute
+
+        15.times { |n|
+          expect(vm.registers["v#{n}".to_sym]).to eq(n * 2)
+        }
       end
     end
   end
