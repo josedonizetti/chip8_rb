@@ -355,7 +355,11 @@ module  Chip8
 
     context "Fx15" do
       it "should set delay timer to Vx" do
-        pending
+        program = [0x63, 0xFE, 0xF3, 0x15]
+        vm = VM.new(program)
+        vm.execute
+
+        expect(vm.dt).to eq(0xFE)
       end
     end
 
