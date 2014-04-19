@@ -37,28 +37,32 @@ module Chip8
     def execute
       index = 0
       while (@memory[pc] != 0x00 || @memory[pc + 1] != 0x00) && (@pc < @memory.size)
-        byte1 = memory[@pc]
-        byte2 = memory[@pc + 1]
-
-        case (byte1 >> 4)
-        when 0x0; op0x0(byte1, byte2); next
-        when 0x1; op0x1(byte1, byte2); next
-        when 0x2; op0x2(byte1, byte2); next
-        when 0x3; op0x3(byte1, byte2)
-        when 0x4; op0x4(byte1, byte2)
-        when 0x5; op0x5(byte1, byte2)
-        when 0x6; op0x6(byte1, byte2)
-        when 0x7; op0x7(byte1, byte2)
-        when 0x8; op0x8(byte1, byte2)
-        when 0x9; op0x9(byte1, byte2)
-        when 0xA; op0xA(byte1, byte2)
-        when 0xB; op0xB(byte1, byte2); next
-        when 0xC; op0xC(byte1, byte2)
-        when 0xF; op0xF(byte1, byte2)
-        end
-
-        @pc += 2
+        step
       end
+    end
+
+    def step
+      byte1 = memory[@pc]
+      byte2 = memory[@pc + 1]
+
+      case (byte1 >> 4)
+      when 0x0; op0x0(byte1, byte2); return
+      when 0x1; op0x1(byte1, byte2); return
+      when 0x2; op0x2(byte1, byte2); return
+      when 0x3; op0x3(byte1, byte2)
+      when 0x4; op0x4(byte1, byte2)
+      when 0x5; op0x5(byte1, byte2)
+      when 0x6; op0x6(byte1, byte2)
+      when 0x7; op0x7(byte1, byte2)
+      when 0x8; op0x8(byte1, byte2)
+      when 0x9; op0x9(byte1, byte2)
+      when 0xA; op0xA(byte1, byte2)
+      when 0xB; op0xB(byte1, byte2); return
+      when 0xC; op0xC(byte1, byte2)
+      when 0xF; op0xF(byte1, byte2)
+      end
+
+      @pc += 2
     end
 
     private
