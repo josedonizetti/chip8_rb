@@ -393,7 +393,32 @@ module  Chip8
 
     context "Fx55" do
       it "should store registers V0 through Vx in memory starting at location I" do
-        pending
+        program = [ 0xAF, 0x00,
+                    0x60, 0x00, 0x61, 0x01, 0x62, 0x02, 0x63, 0x03,
+                    0x64, 0x04, 0x65, 0x05, 0x66, 0x06, 0x67, 0x07,
+                    0x68, 0x08, 0x69, 0x09, 0x6A, 0x0A, 0x6B, 0x0B,
+                    0x6C, 0x0C, 0x6D, 0x0D, 0x6E, 0x0E, 0x6F, 0x0F,
+                    0xFF, 0x55]
+
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.memory[0xF00 + 0]).to eq(0x00)
+        expect(emulator.memory[0xF00 + 1]).to eq(0x01)
+        expect(emulator.memory[0xF00 + 2]).to eq(0x02)
+        expect(emulator.memory[0xF00 + 3]).to eq(0x03)
+        expect(emulator.memory[0xF00 + 4]).to eq(0x04)
+        expect(emulator.memory[0xF00 + 5]).to eq(0x05)
+        expect(emulator.memory[0xF00 + 6]).to eq(0x06)
+        expect(emulator.memory[0xF00 + 7]).to eq(0x07)
+        expect(emulator.memory[0xF00 + 8]).to eq(0x08)
+        expect(emulator.memory[0xF00 + 9]).to eq(0x09)
+        expect(emulator.memory[0xF00 + 10]).to eq(0x0A)
+        expect(emulator.memory[0xF00 + 11]).to eq(0x0B)
+        expect(emulator.memory[0xF00 + 12]).to eq(0x0C)
+        expect(emulator.memory[0xF00 + 13]).to eq(0x0D)
+        expect(emulator.memory[0xF00 + 14]).to eq(0x0E)
+        expect(emulator.memory[0xF00 + 15]).to eq(0x0F)
       end
     end
 

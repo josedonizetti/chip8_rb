@@ -47,6 +47,7 @@ module Chip8
         when 0x9; op0x9(byte1, byte2)
         when 0xA; op0xA(byte1, byte2)
         when 0xB; op0xB(byte1, byte2); next
+        when 0xF; op0xF(byte1, byte2)
         end
 
         @pc += 2
@@ -191,6 +192,14 @@ module Chip8
       @pc = nnn + @registers[:v0]
     end
 
+    def op0xF(byte1, byte2)
+      x = get_register_x(byte1)
+      0.upto(@registers[x]) do |n|
+        @memory[@i] = @registers["v#{n}".to_sym]
+        @i += 1
+      end
+    end
+
     def get_register_x(byte)
       "v#{(byte & 0xF)}".to_sym
     end
@@ -200,7 +209,11 @@ module Chip8
     end
 
     def get_nnn(byte1, byte2)
-      "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+      if byte2 == 0
+        "#{(byte1 & 0xf).to_s(16)}00".hex
+      else
+        "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+      end
     end
 
     def equal_register_to_byte?(register, byte)
