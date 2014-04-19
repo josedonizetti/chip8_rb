@@ -378,16 +378,14 @@ module  Chip8
     end
 
     context "Fx33" do
-      it "should store bcd representation of Vx in memory I" do
-        pending
-      end
+      it "should store bcd representation of Vx in memory I, I+1, and I+2" do
+        program = [0xAF, 0x01, 0x61, 0xFF, 0xF1, 0x33]
+        vm = VM.new(program)
+        vm.execute
 
-      it "should store bcd representation of Vx in memory I + 1" do
-        pending
-      end
-
-      it "should store bcd representation of Vx in memory I + 2" do
-        pending
+        expect(vm.memory[0xF01]).to eq(2)
+        expect(vm.memory[0xF01 + 1]).to eq(5)
+        expect(vm.memory[0xF01 + 2]).to eq(5)
       end
     end
 

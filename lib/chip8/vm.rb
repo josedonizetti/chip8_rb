@@ -188,8 +188,20 @@ module Chip8
 
     def op0xF(byte1, byte2)
       case byte2
+      when 0x33; op0xF_33(byte1)
       when 0x55; op0xF_55(byte1)
       when 0x65; op0xF_65(byte1)
+      end
+    end
+
+    def op0xF_33(byte1)
+      x = get_register_x(byte1)
+      value = @registers[x]
+      index = 2
+      while index >= 0
+        @memory[@i + index] = value % 10
+        value = value / 10
+        index -= 1
       end
     end
 
@@ -220,6 +232,8 @@ module Chip8
     def get_nnn(byte1, byte2)
       if byte2 == 0
         "#{(byte1 & 0xf).to_s(16)}00".hex
+      elsif byte2 < 0x10
+        "#{(byte1 & 0xf).to_s(16)}0#{byte2.to_s(16)}".hex
       else
         "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
       end
