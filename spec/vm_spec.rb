@@ -21,6 +21,21 @@ module  Chip8
       end
     end
 
+    context "0nnn" do
+      it "should be ignored" do
+      end
+    end
+
+    context "00E0" do
+      it "it shoudl clear the display" do
+      end
+    end
+
+    context "00EE" do
+      it "it should return from a subroutine" do
+      end
+    end
+
     context "1nnn" do
       it "should set program counter to nnn" do
         program = [0x12, 0x25]
