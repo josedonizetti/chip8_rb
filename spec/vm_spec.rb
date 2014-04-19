@@ -246,19 +246,28 @@ module  Chip8
 
     context "8xyE" do
       it "should set Vx = Vx << 1" do
-        pending
+        program = [0x68, 0x32, 0x88, 0x0E]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v8]).to eq(100)
       end
 
       it "should set VF to 1 if Vx most-signiticant bit is 1" do
-        pending
+        program = [0x68, 0xFF, 0x88, 0x0E]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v15]).to eq(1)
       end
 
       it "should set VF to 0 if Vx most-signiticant bit is 0" do
-        pending
-      end
+        program = [0x68, 0x32, 0x88, 0x0E]
+        emulator = VM.load(program)
+        emulator.registers[:v15] = 1
+        emulator.execute
 
-      it "should multiply Vx by 2" do
-        pending
+        expect(emulator.registers[:v15]).to eq(0)
       end
     end
 

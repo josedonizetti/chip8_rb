@@ -96,6 +96,7 @@ module Chip8
       when 0x5; op0x8_5(byte1, byte2)
       when 0x6; op0x8_6(byte1, byte2)
       when 0x7; op0x8_7(byte1, byte2)
+      when 0xE; op0x8_E(byte1, byte2)
       end
     end
 
@@ -148,6 +149,12 @@ module Chip8
       y = get_register_y(byte2)
       @registers[:v15] = @registers[y] > @registers[x] ? 1 : 0
       @registers[x] = @registers[y] - @registers[x]
+    end
+
+    def op0x8_E(byte1, byte2)
+      x = get_register_x(byte1)
+      @registers[:v15] = (@registers[x] & 0x80 > 0) ? 1 : 0 
+      @registers[x] = @registers[x] << 1
     end
 
     def get_register_x(byte)
