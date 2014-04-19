@@ -18,8 +18,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "gosu"
-  spec.add_development_dependency "textplay"
+  spec.add_dependency "gosu"
+  spec.add_dependency 'texplay'
 
   spec.add_development_dependency "bundler", "~> 1.6.rc2"
   spec.add_development_dependency "rake"
