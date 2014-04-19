@@ -304,7 +304,15 @@ module  Chip8
 
     context "Cxkk" do
       it "should set Vx = random number between(0 and 255) AND kk" do
-        pending
+        Kernel.should_receive(:rand)
+              .with(256)
+              .and_return(223)
+
+        program = [0xC6, 0x22]
+        vm = VM.new(program)
+        vm.execute
+
+        expect(vm.registers[:v6]).to eq(2)
       end
     end
 

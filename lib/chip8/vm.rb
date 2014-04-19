@@ -49,6 +49,7 @@ module Chip8
         when 0x9; op0x9(byte1, byte2)
         when 0xA; op0xA(byte1, byte2)
         when 0xB; op0xB(byte1, byte2); next
+        when 0xC; op0xC(byte1, byte2)
         when 0xF; op0xF(byte1, byte2)
         end
 
@@ -186,6 +187,11 @@ module Chip8
     def op0xB(byte1, byte2)
       nnn = get_nnn(byte1, byte2)
       @pc = nnn + @registers[:v0]
+    end
+
+    def op0xC(byte1, byte2)
+      x = get_register_x(byte1)
+      @registers[x] = Kernel.rand(256) & byte2
     end
 
     def op0xF(byte1, byte2)
