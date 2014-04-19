@@ -284,7 +284,11 @@ module  Chip8
 
     context "Annn" do
       it "should set the register I = nnn" do
-        pending
+        program = [0xA2, 0x25]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.i).to eq(0x225)
       end
     end
 

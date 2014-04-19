@@ -1,6 +1,6 @@
 module Chip8
   class VM
-    attr_reader :memory, :sp, :pc, :registers
+    attr_reader :memory, :sp, :pc, :registers, :i
 
     def initialize(program)
       @program = program
@@ -13,6 +13,8 @@ module Chip8
       @registers = {}
       # 0 to F
       16.times { |i| @registers["v#{i}".to_sym] = 0 }
+
+      @i = 0
     end
 
     def initialize_memory
@@ -43,6 +45,7 @@ module Chip8
         when 0x7; op0x7(byte1, byte2)
         when 0x8; op0x8(byte1, byte2)
         when 0x9; op0x9(byte1, byte2)
+        when 0xA; op0xA(byte1, byte2)
         end
 
         @pc += 2
@@ -174,6 +177,10 @@ module Chip8
       x = get_register_x(byte1)
       y = get_register_y(byte2)
       skip_next_instruction if !equal_register_to_register?(x,y)
+    end
+
+    def op0xA(byte1, byte2)
+      @i = "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
     end
 
     def get_register_x(byte)
