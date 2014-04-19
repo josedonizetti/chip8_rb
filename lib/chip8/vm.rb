@@ -42,6 +42,7 @@ module Chip8
         when 0x6; op0x6(byte1, byte2)
         when 0x7; op0x7(byte1, byte2)
         when 0x8; op0x8(byte1, byte2)
+        when 0x9; op0x9(byte1, byte2)
         end
 
         @pc += 2
@@ -167,6 +168,12 @@ module Chip8
 
       #TODO: write spec to this case
       @registers[x] -= 256 if @registers[x] > 255
+    end
+
+    def op0x9(byte1, byte2)
+      x = get_register_x(byte1)
+      y = get_register_y(byte2)
+      skip_next_instruction if !equal_register_to_register?(x,y)
     end
 
     def get_register_x(byte)
