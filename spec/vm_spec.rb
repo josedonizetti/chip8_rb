@@ -185,25 +185,35 @@ module  Chip8
         emulator.registers[:v15] = 1
         emulator.execute
 
+        expect(emulator.registers[:v13]).to eq(-16)
         expect(emulator.registers[:v15]).to eq(0)
       end
     end
 
     context "8xy6" do
       it "should set Vx = Vx >> 1" do
-        pending
+        program = [0x63, 0x64, 0x83, 0x16]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v3]).to eq(50)
       end
 
       it "should set VF to 1 if Vx least-significant bit is 1" do
-        pending
+        program = [0x63, 0x63, 0x83, 0x16]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v15]).to eq(1)
       end
 
       it "should set VF to 0 if Vx least-significant bit is not 1" do
-        pending
-      end
+        program = [0x63, 0x64, 0x83, 0x16]
+        emulator = VM.load(program)
+        emulator.registers[:v15] = 1
+        emulator.execute
 
-      it "should divide Vx by 2" do
-        pending
+        expect(emulator.registers[:v15]).to eq(0)
       end
     end
 
