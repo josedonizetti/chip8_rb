@@ -46,6 +46,7 @@ module Chip8
         when 0x8; op0x8(byte1, byte2)
         when 0x9; op0x9(byte1, byte2)
         when 0xA; op0xA(byte1, byte2)
+        when 0xB; op0xB(byte1, byte2); next
         end
 
         @pc += 2
@@ -181,6 +182,11 @@ module Chip8
 
     def op0xA(byte1, byte2)
       @i = "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+    end
+
+    def op0xB(byte1, byte2)
+      nnn = "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
+      @pc = nnn + @registers[:v0]
     end
 
     def get_register_x(byte)

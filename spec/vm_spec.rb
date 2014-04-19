@@ -294,7 +294,11 @@ module  Chip8
 
     context "Bnnn" do
       it "should jump to location nnn + V0" do
-        pending
+        program = [0x60, 0x22, 0xB3, 0x22]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.pc).to eq(0x22 + 0x322)
       end
     end
 
