@@ -403,22 +403,9 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.memory[0xF00 + 0]).to eq(0x00)
-        expect(vm.memory[0xF00 + 1]).to eq(0x01)
-        expect(vm.memory[0xF00 + 2]).to eq(0x02)
-        expect(vm.memory[0xF00 + 3]).to eq(0x03)
-        expect(vm.memory[0xF00 + 4]).to eq(0x04)
-        expect(vm.memory[0xF00 + 5]).to eq(0x05)
-        expect(vm.memory[0xF00 + 6]).to eq(0x06)
-        expect(vm.memory[0xF00 + 7]).to eq(0x07)
-        expect(vm.memory[0xF00 + 8]).to eq(0x08)
-        expect(vm.memory[0xF00 + 9]).to eq(0x09)
-        expect(vm.memory[0xF00 + 10]).to eq(0x0A)
-        expect(vm.memory[0xF00 + 11]).to eq(0x0B)
-        expect(vm.memory[0xF00 + 12]).to eq(0x0C)
-        expect(vm.memory[0xF00 + 13]).to eq(0x0D)
-        expect(vm.memory[0xF00 + 14]).to eq(0x0E)
-        expect(vm.memory[0xF00 + 15]).to eq(0x0F)
+        15.times do |number|
+          expect(vm.memory[0xF00 + number]).to eq(number)
+        end
       end
     end
 
