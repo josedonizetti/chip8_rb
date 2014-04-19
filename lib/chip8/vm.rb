@@ -54,12 +54,6 @@ module Chip8
       end
     end
 
-    class << self
-      def load(program)
-        VM.new(program)
-      end
-    end
-
     private
 
     def op0x1(byte1, byte2)
