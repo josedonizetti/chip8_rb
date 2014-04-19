@@ -27,12 +27,14 @@ module  Chip8
     end
 
     context "00E0" do
-      it "it shoudl clear the display" do
+      it "it should clear the display" do
+        pending
       end
     end
 
     context "00EE" do
       it "it should return from a subroutine" do
+        pending
       end
     end
 
@@ -351,6 +353,7 @@ module  Chip8
 
     context "Ex9E" do
       it "should skip next instruction if key with Vx value is pressed" do
+        pending
       end
     end
 
