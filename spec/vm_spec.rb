@@ -379,7 +379,11 @@ module  Chip8
 
     context "Fx1E" do
       it "should set I = I + Vx" do
-        pending
+        program = [0xAF, 0x33, 0x67, 0x33, 0xF7, 0x1E]
+        vm = VM.new(program)
+        vm.execute
+
+        expect(vm.i).to eq(0xF66)
       end
     end
 

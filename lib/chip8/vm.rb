@@ -193,6 +193,7 @@ module Chip8
       when 0x07; op0xF_07(byte1)
       when 0x15; op0xF_15(byte1)
       when 0x18; op0xF_18(byte1)
+      when 0x1E; op0xF_1E(byte1)
       when 0x33; op0xF_33(byte1)
       when 0x55; op0xF_55(byte1)
       when 0x65; op0xF_65(byte1)
@@ -212,6 +213,11 @@ module Chip8
     def op0xF_18(byte1)
       x = get_register_x(byte1)
       @st = @registers[x]
+    end
+
+    def op0xF_1E(byte1)
+      x = get_register_x(byte1)
+      @i = @i + @registers[x]
     end
 
     def op0xF_33(byte1)
