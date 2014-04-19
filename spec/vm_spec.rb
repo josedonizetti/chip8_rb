@@ -219,12 +219,28 @@ module  Chip8
 
     context "8xy7" do
       it "should set Vx = Vy - Vx" do
+        program = [0x65, 0x05, 0x66, 0x10, 0x85, 0x67]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v5]).to eq(11)
       end
 
       it "should set VF to 1 if Vy > Vx" do
+        program = [0x65, 0x05, 0x66, 0x10, 0x85, 0x67]
+        emulator = VM.load(program)
+        emulator.execute
+
+        expect(emulator.registers[:v15]).to eq(1)
       end
 
-      it "should set VF to 0 if Vy < Vx" do
+      it "should set VF to 0 if Vy =< Vx" do
+        program = [0x65, 0x10, 0x66, 0x05, 0x85, 0x67]
+        emulator = VM.load(program)
+        emulator.registers[:v15] = 1
+        emulator.execute
+
+        expect(emulator.registers[:v15]).to eq(0)
       end
     end
 
