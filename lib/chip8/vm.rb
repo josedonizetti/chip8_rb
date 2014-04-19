@@ -2,6 +2,12 @@ module Chip8
   class VM
     attr_reader :memory, :sp, :pc, :registers, :i, :dt, :st
 
+    alias :program_counter :pc
+    alias :stack_pointer :sp
+    alias :delay_timer :dt
+    alias :sound_timer :st
+    alias :I :i
+
     def initialize(program)
       @program = program
       initialize_memory
