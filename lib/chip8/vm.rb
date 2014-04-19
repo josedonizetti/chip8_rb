@@ -189,11 +189,17 @@ module Chip8
 
     def op0xF(byte1, byte2)
       case byte2
+      when 0x07; op0xF_07(byte1)
       when 0x15; op0xF_15(byte1)
       when 0x33; op0xF_33(byte1)
       when 0x55; op0xF_55(byte1)
       when 0x65; op0xF_65(byte1)
       end
+    end
+
+    def op0xF_07(byte1)
+      x = get_register_x(byte1)
+      @registers[x] = @dt
     end
 
     def op0xF_15(byte1)

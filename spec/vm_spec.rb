@@ -338,8 +338,12 @@ module  Chip8
     end
 
     context "Fx07" do
-      it "should set Vx = delay times value" do
-        pending
+      it "should set Vx = delay timer value" do
+        program = [0x63, 0xFA, 0xF3, 0x15, 0xF4, 0x07]
+        vm = VM.new(program)
+        vm.execute
+
+        expect(vm.registers[:v4]).to eq(0xFA)
       end
     end
 
