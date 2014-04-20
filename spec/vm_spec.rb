@@ -369,8 +369,13 @@ module  Chip8
     end
 
     context "ExA1" do
-      it "should skip next instruction if key with Vx is not pressed" do
-        pending
+      it "should skip next instruction if key stored in Vx is up" do
+        program = [0x65, 0x0F, 0xE5, 0xA1]
+        vm = VM.new(program)
+        initial_pc = vm.pc
+        vm.execute
+
+        expect(vm.pc).to eq(initial_pc + 4 + 2)
       end
     end
 

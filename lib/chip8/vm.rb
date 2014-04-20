@@ -242,6 +242,7 @@ module Chip8
     def op0xE(byte1, byte2)
       case byte2
       when 0x9E; op0xE_9E(byte1)
+      when 0xA1; op0xE_A1(byte1)
       end
     end
 
@@ -250,6 +251,13 @@ module Chip8
       key = get_key(@registers[x])
 
       skip_next_instruction if key_down?(key)
+    end
+
+    def op0xE_A1(byte1)
+      x = get_register_x(byte1)
+      key = get_key(@registers[x])
+
+      skip_next_instruction if key_up?(key)
     end
 
     def op0xF(byte1, byte2)
@@ -356,6 +364,10 @@ module Chip8
 
     def key_down?(key)
       @keyboard[key] == false
+    end
+
+    def key_up?(key)
+      @keyboard[key]
     end
   end
 end
