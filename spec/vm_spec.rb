@@ -390,12 +390,13 @@ module  Chip8
     end
 
     context "Fx0A" do
-      it "should stop execution until a key is pressed" do
-        pending
-      end
+      it "should stop execution until a key is pressed, and then store key value on Vx" do
+        program = [0xF1, 0x0A]
+        vm = VM.new(program)
+        vm.execute
+        vm.key_pressed(0x0C)
 
-      it "should set the key press down to Vx" do
-        pending
+        expect(vm.v1).to eq(0x0C)
       end
     end
 

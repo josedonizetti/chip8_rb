@@ -32,6 +32,9 @@ module Chip8
       # 0 to F
       #true key is up, false key is down
       16.times { |i| @keyboard["k#{i}".to_sym] = true }
+
+      # while true, execute the program
+      @execution = true
     end
 
     def initialize_memory
@@ -55,6 +58,8 @@ module Chip8
     end
 
     def step
+      return unless @execution
+
       byte1 = memory[@pc]
       byte2 = memory[@pc + 1]
 
@@ -81,6 +86,12 @@ module Chip8
 
     def set_key_down(key)
       @keyboard[key] = false
+    end
+
+    def key_pressed(key)
+      if !@execution && !@execution_register.nil?
+        @registers[@execution_register] = key
+      end
     end
 
     private
@@ -263,6 +274,7 @@ module Chip8
     def op0xF(byte1, byte2)
       case byte2
       when 0x07; op0xF_07(byte1)
+      when 0x0A; op0xF_0A(byte1)
       when 0x15; op0xF_15(byte1)
       when 0x18; op0xF_18(byte1)
       when 0x1E; op0xF_1E(byte1)
@@ -275,6 +287,11 @@ module Chip8
     def op0xF_07(byte1)
       x = get_register_x(byte1)
       @registers[x] = @dt
+    end
+
+    def op0xF_0A(byte1)
+      @execution_register = get_register_x(byte1)
+      wait_key_press
     end
 
     def op0xF_15(byte1)
@@ -368,6 +385,10 @@ module Chip8
 
     def key_up?(key)
       @keyboard[key]
+    end
+
+    def wait_key_press
+      @execution = false
     end
   end
 end
