@@ -1,0 +1,12 @@
+debugger
+  - breakpoint
+  - step by step
+  - watch environment
+  - remote/terminal version
+
+DSL to write chip8 programs
+execute DSL direct
+
+compiler
+  assembly to DSL
+  DSL to Assembely
