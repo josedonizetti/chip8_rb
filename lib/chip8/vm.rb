@@ -27,6 +27,11 @@ module Chip8
       @st = 0
 
       define_registers_methods
+
+      @keyboard = {}
+      # 0 to F
+      #true key is up, false key is down
+      16.times { |i| @keyboard["k#{i}".to_sym] = true }
     end
 
     def initialize_memory
@@ -67,10 +72,15 @@ module Chip8
       when 0xA; op0xA(byte1, byte2)
       when 0xB; op0xB(byte1, byte2); return
       when 0xC; op0xC(byte1, byte2)
+      when 0xE; op0xE(byte1, byte2)
       when 0xF; op0xF(byte1, byte2)
       end
 
       @pc += 2
+    end
+
+    def set_key_down(key)
+      @keyboard[key] = false
     end
 
     private
@@ -229,6 +239,19 @@ module Chip8
       @registers[x] = Kernel.rand(256) & byte2
     end
 
+    def op0xE(byte1, byte2)
+      case byte2
+      when 0x9E; op0xE_9E(byte1)
+      end
+    end
+
+    def op0xE_9E(byte1)
+      x = get_register_x(byte1)
+      key = get_key(@registers[x])
+
+      skip_next_instruction if key_down?(key)
+    end
+
     def op0xF(byte1, byte2)
       case byte2
       when 0x07; op0xF_07(byte1)
@@ -325,6 +348,14 @@ module Chip8
           @registers[register]
         end
       }
+    end
+
+    def get_key(key)
+      "k#{key}".to_sym
+    end
+
+    def key_down?(key)
+      @keyboard[key] == false
     end
   end
 end

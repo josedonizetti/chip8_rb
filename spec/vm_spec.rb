@@ -357,8 +357,14 @@ module  Chip8
     end
 
     context "Ex9E" do
-      it "should skip next instruction if key with Vx value is pressed" do
-        pending
+      it "should skip next instruction if key stored in Vx is down" do
+        program = [0x63, 0x02, 0xE3, 0x9E]
+        vm = VM.new(program)
+        vm.set_key_down(:k2)
+        initial_pc = vm.pc
+        vm.execute
+
+        expect(vm.pc).to eq(initial_pc + 4 + 2)
       end
     end
 
