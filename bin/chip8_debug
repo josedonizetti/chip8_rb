@@ -1,0 +1,29 @@
+require 'chip8'
+
+@program = File.open(ARGV.shift) {|file| file.read }.unpack("C*")
+@vm = Chip8::VM.new(@program)
+
+def execute_command(command)
+  case command
+  when "help", "h"
+  when "next", "n"
+    @vm.step
+    byte1 = @program[@vm.pc - 512]
+    byte2 = @program[(@vm.pc + 1) - 512]
+    puts Opcode.new(byte1, byte2).parse
+  when "continue", "c"
+  when "breakpoint", "bp"
+  when "registers", "r"
+  when "memory", "m"
+  when "list", "l"
+  when "where", "w"
+  else
+    puts "Command not found. Try help."
+  end
+end
+
+while true
+  print "> "
+  command = gets.chomp
+  execute_command(command)
+end
