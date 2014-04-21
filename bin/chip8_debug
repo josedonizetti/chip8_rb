@@ -6,17 +6,34 @@ require 'chip8'
 def execute_command(command)
   case command
   when "help", "h"
-  when "next", "n"
+  when "step", "s"
     @vm.step
     byte1 = @program[@vm.pc - 512]
     byte2 = @program[(@vm.pc + 1) - 512]
     puts Opcode.new(byte1, byte2).parse
   when "continue", "c"
+    @vm.execute
   when "breakpoint", "bp"
   when "registers", "r"
+    puts @vm.registers.inspect
   when "memory", "m"
-  when "list", "l"
+    puts @vm.memory.inspect
   when "where", "w"
+    byte1 = @program[@vm.pc - 512]
+    byte2 = @program[(@vm.pc + 1) - 512]
+    puts Opcode.new(byte1, byte2).parse
+  when "program_counter","pc"
+    puts @vm.pc
+  when "stack_pointer", "sp"
+    puts @vm.sp
+  when "delay_timer", "dt"
+    puts @vm.dt
+  when "sound_timer", "st"
+    puts @vm.st
+  when "I", "i"
+    puts @vm.i
+  when "stack"
+    puts @vm.stack.inspect
   else
     puts "Command not found. Try help."
   end

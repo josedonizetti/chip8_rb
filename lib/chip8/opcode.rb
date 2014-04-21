@@ -1,5 +1,3 @@
-#sprintf("%-10s $%01x%02x", "JUMP", (byte1&0xF), byte2)
-
 class Opcode
 
   def initialize(byte1, byte2)
@@ -124,7 +122,7 @@ class Opcode
   def op0x8_4(byte1, byte2)
     registerX = get_register_x(byte1)
     registerY = get_register_y(byte2)
-    "Set #{registerX} = #{registerX} + #{registerY}, set VF = carry."
+    "Set #{registerX} = #{registerX} + #{registerY}, set V15 = carry."
   end
 
   def op0x8_5(byte1, byte2)
