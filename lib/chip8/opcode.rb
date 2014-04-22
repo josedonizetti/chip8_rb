@@ -170,7 +170,10 @@ class Opcode
   end
 
   def op0xD(byte1, byte2)
-    "Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision."
+    registerX = get_register_x(byte1)
+    registerY = get_register_y(byte2)
+    n = byte2&0xF
+    "Display #{n}-byte sprite starting at memory location I at (#{registerX}, #{registerY}), set VF = collision."
   end
 
   def op0xE(byte1, byte2)
