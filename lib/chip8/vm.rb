@@ -283,7 +283,13 @@ module Chip8
           y += 1
           next
         end
-        sprite.to_s(2).split("").each do |bit|
+
+        sprite = sprite.to_s(2).split("")
+        if sprite.size < 8
+          (8 - sprite.size).times { sprite.unshift("0") }
+        end
+
+        sprite.each do |bit|
 
           if x > 64
             x = x - 64
