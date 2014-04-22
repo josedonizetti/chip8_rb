@@ -1,6 +1,6 @@
 module Chip8
   class VM
-    attr_reader :memory, :sp, :pc, :i, :dt, :st, :registers, :stack
+    attr_reader :memory, :sp, :pc, :i, :dt, :st, :registers, :stack, :display
 
     alias :program_counter :pc
     alias :stack_pointer :sp
@@ -35,6 +35,14 @@ module Chip8
 
       # while true, execute the program
       @execution = true
+
+      @display = []
+
+      32.times { |line|
+         columns = []
+         64.times { |column| columns[column] = 0}
+         @display[line] = columns
+      }
     end
 
     def initialize_memory
@@ -77,6 +85,7 @@ module Chip8
       when 0xA; op0xA(byte1, byte2)
       when 0xB; op0xB(byte1, byte2); return
       when 0xC; op0xC(byte1, byte2)
+      when 0xD; op0xD(byte1, byte2)
       when 0xE; op0xE(byte1, byte2)
       when 0xF; op0xF(byte1, byte2)
       end
@@ -98,8 +107,18 @@ module Chip8
 
     def op0x0(byte1, byte2)
       case byte2
+      when 0xE0; op0x00E0()
       when 0xEE; op0x00EE()
       end
+    end
+
+    def op0x00E0
+      32.times { |line|
+         columns = []
+         64.times { |column| columns[column] = 0}
+         @display[line] = columns
+      }
+      @pc += 2
     end
 
     def op0x00EE
@@ -248,6 +267,50 @@ module Chip8
     def op0xC(byte1, byte2)
       x = get_register_x(byte1)
       @registers[x] = Kernel.rand(256) & byte2
+    end
+
+    def op0xD(byte1, byte2)
+      registerX = get_register_x(byte1)
+      registerY = get_register_y(byte2)
+      n = byte2&0xF
+
+      y = @registers[registerY]
+
+      n.times do |number|
+        x = @registers[registerX]
+        sprite = memory[@i+number]
+        if sprite == 0
+          y += 1
+          next
+        end
+        sprite.to_s(2).split("").each do |bit|
+
+          if x > 64
+            x = x - 64
+          elsif x < 0
+            x = x + 64
+          end
+
+          if y > 32
+            y = y - 32
+          elsif y < 0
+            y = y + 32
+          end
+
+          puts "y: #{y} x: #{x} sprite: #{sprite} bit: #{bit}"
+
+          @display[y][x] ^= bit.to_i
+          x += 1
+
+          if @display[y][x] == 0
+            registers[:v15] = 1
+          else
+            registers[:v15] = 0
+          end
+        end
+
+        y += 1
+      end
     end
 
     def op0xE(byte1, byte2)
