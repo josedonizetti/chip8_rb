@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="debugger.css">
+  </head>
+  <body>
+    <h1><%= @opcode %></h1>
+    <form action="/" method="post">
+      <input type="submit" value="step">
+    </form>
+
+    <div class="registers">
+      <h2>Memory</h2>
+      <table>
+        <% @memory.each_with_index do |value, index| %>
+          <tr>
+            <td>0x<%= (index + 0x200).to_s(16) %></td>
+            <td><%= value %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+
+    <div class="registers">
+      <h2>Registers</h2>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+        <% @vm.registers.each do |k,v| %>
+          <tr>
+            <td><%= k %></td>
+            <td><%= v %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+
+    <div class="registers">
+      <h2>Special Registers</h2>
+      <table>
+        <tr>
+          <td>Program Counter</td>
+          <td><%= @vm.pc %></td>
+        </tr>
+        <tr>
+          <td>I</td>
+          <td>0x<%= @vm.i.to_s(16) %></td>
+        </tr>
+        <tr>
+          <td>Delay Timer</td>
+          <td><%= @vm.dt %></td>
+        </tr>
+        <tr>
+          <td>Sound Timer</td>
+          <td><%= @vm.st %></td>
+        </tr>
+        <tr>
+          <td>Stack Pointer</td>
+          <td><%= @vm.sp %></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="registers">
+      <h2>Display</h2>
+      <table>
+        <% @vm.display.each do |line| %>
+          <tr>
+            <% line.each do |column| %>
+              <td class="<%= column == 1 ? 'display-column' : ''%>">
+              </td>
+            <% end %>
+          <tr>
+        <% end %>
+      </table>
+    </div>
+
+  </body>
+</html>

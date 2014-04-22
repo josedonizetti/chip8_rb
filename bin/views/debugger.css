@@ -1,0 +1,9 @@
+.registers {
+  display: inline-block;
+}
+
+.display-column {
+  width: 10px;
+  height: 10px;
+  background-color: yellow;
+}
