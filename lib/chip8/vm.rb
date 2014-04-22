@@ -123,7 +123,7 @@ module Chip8
 
     def op0x00EE
       @sp -= 1
-      @pc = @stack.pop
+      @pc = (@stack.pop + 2)
     end
 
     def op0x1(byte1, byte2)
