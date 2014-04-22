@@ -8,7 +8,7 @@ class GameWindow < Gosu::Window
     super 640, 320, false, 1
     self.caption = "chip8"
 
-    @img = TexPlay.create_image(self, 640, 320, :color => Gosu::Color::BLUE)
+    @img = TexPlay.create_image(self, 640, 320, :color => Gosu::Color::BLACK)
   end
 
   def load(filename)
@@ -17,12 +17,15 @@ class GameWindow < Gosu::Window
   end
 
   def update
+    @vm.step
     y = 0
     @vm.display.each do |line|
       x = 0
       line.each do |column|
         if column == 1
           @img.rect x,y, (x+10), (y+10), :color => :yellow, :fill => true
+        else
+          @img.rect x,y, (x+10), (y+10), :color => :black, :fill => true
         end
         x += 10
       end
@@ -35,33 +38,16 @@ class GameWindow < Gosu::Window
   end
 
   def button_down(id)
-    if id == 36
-      byte1 = @vm.memory[@vm.pc]
-      byte2 = @vm.memory[(@vm.pc + 1)]
-      puts Opcode.new(byte1, byte2).parse
-      @vm.step
-    end
-
-    if id == 15
-      puts @vm.registers
-    end
-
-    if id == 46
-      puts @vm.memory.inspect
-    end
-
-    if id == 34
-      puts @vm.i.inspect
-    end
-
-    if id == 2
-      @vm.display.each do |line|
-        puts line.join(",")
-      end
-    end
+    puts "keydown"
+    puts id
+    @vm.set_key_down("k#{id}")
+    @vm.key_pressed(id)
   end
 
   def button_up(id)
+    puts "keyup"
+    puts id
+    @vm.set_key_up("k#{id}")
   end
 end
 
