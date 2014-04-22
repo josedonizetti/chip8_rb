@@ -297,8 +297,6 @@ module Chip8
             y = y + 32
           end
 
-          puts "y: #{y} x: #{x} sprite: #{sprite} bit: #{bit}"
-
           @display[y][x] ^= bit.to_i
           x += 1
 
