@@ -41,7 +41,7 @@ class Opcode
     "CLS"
   end
 
-  def op0x0_E1(byte1)
+  def op0x0_EE(byte1)
     "RET"
   end
 
