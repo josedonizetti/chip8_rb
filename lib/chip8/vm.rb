@@ -97,6 +97,10 @@ module Chip8
       @keyboard[key] = false
     end
 
+    def set_key_up(key)
+      @keyboard[key] = true
+    end
+
     def key_pressed(key)
       if !@execution && !@execution_register.nil?
         @registers[@execution_register] = key
