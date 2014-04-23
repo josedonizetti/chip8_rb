@@ -117,7 +117,7 @@ module  Chip8
         vm = VM.new(program)
         vm.execute
 
-        expect(vm.v14).to eq(323)
+        expect(vm.v14).to eq(67)
       end
     end
 
