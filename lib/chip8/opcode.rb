@@ -82,7 +82,7 @@ class Opcode
   end
 
   def op0x8(byte1, byte2)
-    case byte2
+    case (byte2 & 0xF)
     when 0x0; op0x8_0(byte1, byte2)
     when 0x1; op0x8_1(byte1, byte2)
     when 0x2; op0x8_2(byte1, byte2)
