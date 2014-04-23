@@ -411,13 +411,8 @@ module Chip8
     end
 
     def get_nnn(byte1, byte2)
-      if byte2 == 0
-        "#{(byte1 & 0xf).to_s(16)}00".hex
-      elsif byte2 < 0x10
-        "#{(byte1 & 0xf).to_s(16)}0#{byte2.to_s(16)}".hex
-      else
-        "#{(byte1 & 0xf).to_s(16)}#{byte2.to_s(16)}".hex
-      end
+      opcode = byte1 << 8 | byte2;
+      opcode & 0xFFF
     end
 
     def equal_register_to_byte?(register, byte)
