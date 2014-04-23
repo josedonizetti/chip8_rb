@@ -20,7 +20,7 @@ module Chip8
 
       @registers = {}
       # 0 to F
-      16.times { |i| @registers["v#{i}".to_sym] = 0 }
+      16.times { |i| @registers[i] = 0 }
 
       @i = 0
       @dt = 0
@@ -211,33 +211,33 @@ module Chip8
       x = get_register_x(byte1)
       y = get_register_y(byte2)
       sum = @registers[x] + @registers[y]
-      @registers[:v15] = sum > 255 ? 1 : 0
+      @registers[15] = sum > 255 ? 1 : 0
       @registers[x] = sum & 0xFF
     end
 
     def op0x8_5(byte1, byte2)
       x = get_register_x(byte1)
       y = get_register_y(byte2)
-      @registers[:v15] = @registers[x] > @registers[y] ? 1 : 0
+      @registers[15] = @registers[x] > @registers[y] ? 1 : 0
       @registers[x] = (@registers[x] - @registers[y])&0xFF
     end
 
     def op0x8_6(byte1, byte2)
       x = get_register_x(byte1)
-      @registers[:v15] = @registers[x] & 0x1
+      @registers[15] = @registers[x] & 0x1
       @registers[x] = @registers[x] >> 1
     end
 
     def op0x8_7(byte1, byte2)
       x = get_register_x(byte1)
       y = get_register_y(byte2)
-      @registers[:v15] = @registers[y] > @registers[x] ? 1 : 0
+      @registers[15] = @registers[y] > @registers[x] ? 1 : 0
       @registers[x] = (@registers[y] - @registers[x])&0xFF
     end
 
     def op0x8_E(byte1, byte2)
       x = get_register_x(byte1)
-      @registers[:v15] = (@registers[x] & 0x80 > 0) ? 1 : 0
+      @registers[15] = (@registers[x] & 0x80 > 0) ? 1 : 0
       @registers[x] = (@registers[x] << 1)&0xFF
     end
 
@@ -254,7 +254,7 @@ module Chip8
 
     def op0xB(byte1, byte2)
       nnn = get_nnn(byte1, byte2)
-      @pc = nnn + @registers[:v0]
+      @pc = nnn + @registers[0]
     end
 
     def op0xC(byte1, byte2)
@@ -300,9 +300,9 @@ module Chip8
           x += 1
 
           if @display[y][x] == 0
-            registers[:v15] = 1
+            registers[15] = 1
           else
-            registers[:v15] = 0
+            registers[15] = 0
           end
         end
 
@@ -389,7 +389,7 @@ module Chip8
     def op0xF_55(byte1)
       x = get_register_x(byte1)
       0.upto(@registers[x]) do |n|
-        @memory[@i] = @registers["v#{n}".to_sym]
+        @memory[@i] = @registers[n]
         @i += 1
       end
     end
@@ -397,17 +397,17 @@ module Chip8
     def op0xF_65(byte1)
       x = get_register_x(byte1)
       0.upto(@registers[x]) do |n|
-        register = "v#{n}".to_sym
+        register = n
         @registers[register] = @memory[@i + n]
       end
     end
 
     def get_register_x(byte)
-      "v#{(byte & 0xF)}".to_sym
+      byte & 0xF
     end
 
     def get_register_y(byte)
-      "v#{(byte >> 4)}".to_sym
+      byte >> 4
     end
 
     def get_nnn(byte1, byte2)
@@ -429,8 +429,8 @@ module Chip8
 
     def define_registers_methods
       16.times { |n|
-        register = "v#{n}".to_sym
-        define_singleton_method(register) do
+        register = n
+        define_singleton_method("v#{register}".to_sym) do
           @registers[register]
         end
       }
