@@ -31,7 +31,7 @@ module Chip8
       @keyboard = {}
       # 0 to F
       #true key is up, false key is down
-      16.times { |i| @keyboard["k#{i}".to_sym] = true }
+      16.times { |i| @keyboard[i] = true }
 
       # while true, execute the program
       @execution = true
@@ -319,14 +319,14 @@ module Chip8
 
     def op0xE_9E(byte1)
       x = get_register_x(byte1)
-      key = get_key(@registers[x])
+      key = @registers[x]
 
       skip_next_instruction if key_down?(key)
     end
 
     def op0xE_A1(byte1)
       x = get_register_x(byte1)
-      key = get_key(@registers[x])
+      key = @registers[x]
 
       skip_next_instruction if key_up?(key)
     end
@@ -434,10 +434,6 @@ module Chip8
           @registers[register]
         end
       }
-    end
-
-    def get_key(key)
-      "k#{key}".to_sym
     end
 
     def key_down?(key)

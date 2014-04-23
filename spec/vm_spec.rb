@@ -360,7 +360,7 @@ module  Chip8
       it "should skip next instruction if key stored in Vx is down" do
         program = [0x63, 0x02, 0xE3, 0x9E]
         vm = VM.new(program)
-        vm.set_key_down(:k2)
+        vm.set_key_down(2)
         initial_pc = vm.pc
         vm.execute
 
