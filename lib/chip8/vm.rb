@@ -1,6 +1,6 @@
 module Chip8
   class VM
-    attr_reader :memory, :sp, :pc, :i, :dt, :st, :registers, :stack, :display
+    attr_reader :memory, :sp, :pc, :i, :dt, :st, :registers, :stack, :display, :keyboard
 
     alias :program_counter :pc
     alias :stack_pointer :sp
