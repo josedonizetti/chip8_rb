@@ -1,31 +1,5 @@
 #!/usr/bin/env ruby
 require 'chip8'
-require 'sinatra'
+require 'rack'
 
-$program = File.open(ARGV.shift) {|file| file.read }.unpack("C*")
-$vm = Chip8::VM.new($program)
-
-get '/' do
-  @vm = $vm
-  @memory = @vm.memory[0x200,@vm.memory.size]
-  byte1 = $program[@vm.pc - 512]
-  byte2 = $program[(@vm.pc + 1) - 512]
-  @opcode = Opcode.new(byte1, byte2).parse
-  erb :index
-end
-
-
-post '/' do
-  @vm = $vm
-  @vm.step
-  @memory = @vm.memory[0x200,@vm.memory.size]
-  byte1 = $program[@vm.pc - 512]
-  byte2 = $program[(@vm.pc + 1) - 512]
-  @opcode = Opcode.new(byte1, byte2).parse
-  erb :index
-end
-
-
-get '/debugger.css' do
-  File.read("bin/views/debugger.css")
-end
+Rack::Handler::WEBrick.run Chip8::WebDebug
