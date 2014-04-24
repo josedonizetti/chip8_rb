@@ -11,6 +11,25 @@ module Chip8
     set :method_override, true
 
     get '/' do
+      base = "/Users/josedonizetti/workspace"
+      @@program ||= File.read("#{base}/chip8_rb/games/INVADERS") {|file| file.read }.unpack("C*")
+      @@vm ||= VM.new(@@program)
+
+
+      @memory = @@vm.memory[0x200, @@vm.memory.size]
+      @registers = @@vm.registers
+      @keyboard = @@vm.keyboard
+      @stack = @@vm.stack
+      @current_index = (@@vm.pc - 0x200)
+
+      @special_registers = {}
+
+      @special_registers[:program_counter] = "0x#{@@vm.pc.to_s(16)}"
+      @special_registers[:stack_pointer] = @@vm.st
+      @special_registers[:I] = @@vm.i
+      @special_registers[:delay_timer] = @@vm.dt
+      @special_registers[:sound_timer] = @@vm.st
+
       erb :index
     end
   end
