@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'chip8'
 require 'sinatra'
 

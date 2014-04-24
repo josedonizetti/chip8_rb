@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'chip8'
 
 @program = File.open(ARGV.shift) {|file| file.read }.unpack("C*")
