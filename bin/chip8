@@ -38,16 +38,23 @@ class GameWindow < Gosu::Window
   end
 
   def button_down(id)
-    puts "keydown"
-    puts id
-    @vm.set_key_down("k#{id}")
-    @vm.key_pressed(id)
+    key = key_mapping(id)
+    @vm.set_key_down(key)
+    @vm.key_pressed(key)
   end
 
   def button_up(id)
-    puts "keyup"
-    puts id
-    @vm.set_key_up("k#{id}")
+    key = key_mapping(id)
+    @vm.set_key_up(key)
+  end
+
+  private
+  def key_mapping(id)
+    case id
+    when 49;  5  #space
+    when 123; 4  #left arrow
+    when 124; 6  #right arrow
+    end
   end
 end
 
